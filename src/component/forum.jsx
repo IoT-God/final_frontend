@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import friendImage from '../ friend.jpg'
+import friendImage from '../friend.jpg'
 
 const Forum = () => {
   const [records, setRecords] = useState(() => {
@@ -72,7 +72,7 @@ const Forum = () => {
           padding: '10px',
           borderRadius: '5px',
         }}>
-        {records.map((record) => (
+        {records.reverse().map((record) => (
           <div
             key={record.id}
             style={{
