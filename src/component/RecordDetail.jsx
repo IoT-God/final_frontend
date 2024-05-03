@@ -4,16 +4,10 @@ import { useParams, useLocation } from 'react-router-dom'
 const RecordDetail = () => {
   const { id } = useParams()
   const location = useLocation()
-  const { recor } = location.state
-  console.log('id is ', id)
-  console.log('haha', recor)
-  // Check if records is undefined before accessing it
-  // if (!records) {
-  //   return <div style={styles.container}>Loading...</div> // or any other loading indicator
-  // }
+  const { record } = location.state
 
-  // Find the record with the matching ID
-  const record = recor
+  console.log('id is ', id)
+  console.log('record', record)
 
   return (
     <div style={styles.container}>
@@ -34,21 +28,30 @@ const RecordDetail = () => {
 const styles = {
   container: {
     padding: '20px',
+    backgroundColor: '#f9f9f9',
+    borderRadius: '8px',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
   },
   heading: {
     marginBottom: '20px',
-    color: 'blue',
+    color: '#007bff',
+    fontSize: '24px',
   },
   message: {
     marginBottom: '10px',
+    fontSize: '16px',
+    lineHeight: '1.5',
   },
   image: {
     width: '100%',
     maxWidth: '400px',
     height: 'auto',
+    borderRadius: '8px',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
   },
   notFound: {
     color: 'red',
+    fontSize: '16px',
   },
 }
 

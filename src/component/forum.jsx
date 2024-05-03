@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import friendImage from '../ friend.jpg'
 
 const Forum = () => {
   const [records, setRecords] = useState(() => {
@@ -34,7 +35,7 @@ const Forum = () => {
           {
             id: prevRecords.length + 1,
             content: 'known action detect',
-            image: base64Image,
+            image: friendImage,
             description: `Your friend ${name} is coming!`,
           },
         ])
@@ -64,21 +65,34 @@ const Forum = () => {
   return (
     <div style={{ padding: '20px' }}>
       <h1 style={{ marginBottom: '20px' }}>Forum</h1>
-      <div style={{ marginBottom: '20px' }}>
+      <div
+        style={{
+          marginBottom: '20px',
+          border: '1px solid #ccc',
+          padding: '10px',
+          borderRadius: '5px',
+        }}>
         {records.map((record) => (
-          <div key={record.id} style={{ marginBottom: '10px' }}>
+          <div
+            key={record.id}
+            style={{
+              marginBottom: '10px',
+              borderBottom: '1px solid #ccc',
+              paddingBottom: '10px',
+            }}>
             <Link
               to={`/record/${record.id}`}
               style={{
                 marginRight: '10px',
                 textDecoration: 'none',
                 color: 'blue',
+                fontWeight: 'bold',
               }}
-              state={{ recor: record }} // Pass the records prop here
+              state={{ record: record }} // Pass the record prop here
             >
               {record.content}
             </Link>
-            <span style={{ fontSize: '12px', color: 'gray' }}>
+            <span style={{ fontSize: '14px', color: 'gray' }}>
               {record.description}
             </span>
           </div>
