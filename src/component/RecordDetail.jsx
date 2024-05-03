@@ -1,19 +1,55 @@
-// RecordDetail.js
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 
-const RecordDetail = ({ records }) => {
-  // 根据ID获取相应的记录详细信息
+const RecordDetail = () => {
   const { id } = useParams()
-  const record = records.find((record) => record.id === parseInt(id))
+  const location = useLocation()
+  const { recor } = location.state
+  console.log('id is ', id)
+  console.log('haha', recor)
+  // Check if records is undefined before accessing it
+  // if (!records) {
+  //   return <div style={styles.container}>Loading...</div> // or any other loading indicator
+  // }
+
+  // Find the record with the matching ID
+  const record = recor
 
   return (
-    <div>
-      <h2>Record Detail</h2>
-      <p>Message: {record.description}</p>
-      <img src={record.image} alt="Record Image" />
+    <div style={styles.container}>
+      <h2 style={styles.heading}>Record Detail</h2>
+      {record ? (
+        <>
+          <p style={styles.message}>Message: {record.description}</p>
+          <img src={record.image} alt="People img" style={styles.image} />
+        </>
+      ) : (
+        <p style={styles.notFound}>Record not found</p>
+      )}
     </div>
   )
+}
+
+// Styles
+const styles = {
+  container: {
+    padding: '20px',
+  },
+  heading: {
+    marginBottom: '20px',
+    color: 'blue',
+  },
+  message: {
+    marginBottom: '10px',
+  },
+  image: {
+    width: '100%',
+    maxWidth: '400px',
+    height: 'auto',
+  },
+  notFound: {
+    color: 'red',
+  },
 }
 
 export default RecordDetail

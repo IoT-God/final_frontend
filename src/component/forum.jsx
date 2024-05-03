@@ -3,43 +3,38 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 const Forum = () => {
-  // Initialize records state with localStorage data or empty array
   const [records, setRecords] = useState(() => {
     const storedRecords = localStorage.getItem('forumRecords')
     return storedRecords ? JSON.parse(storedRecords) : []
   })
 
-  // Function to fetch data from the backend
   const fetchData = async () => {
     try {
       const response = await axios.get('http://192.168.10.29:5000/video')
       const data = response.data
       const name = data.name
       const image = data.frame
+      const base64Image = `data:image/jpeg;base64,${image}`
 
-      // Update records array based on the received data
-      if (name === 'unkown') {
-        // Add an unknown action detect record
+      if (name === 'Unknown') {
         setRecords((prevRecords) => [
           ...prevRecords,
           {
             id: prevRecords.length + 1,
             content: 'unknown action detect',
-            image: image,
+            image: base64Image,
             description: 'An unknown people detected',
           },
         ])
-      } else if (name === 'empty') {
-        // No action needed
+      } else if (name === 'Empty') {
         console.log('No action needed')
       } else {
-        // Add a known action detect record
         setRecords((prevRecords) => [
           ...prevRecords,
           {
             id: prevRecords.length + 1,
             content: 'known action detect',
-            image: image,
+            image: base64Image,
             description: `Your friend ${name} is coming!`,
           },
         ])
@@ -49,7 +44,6 @@ const Forum = () => {
     }
   }
 
-  // Fetch data every five seconds
   useEffect(() => {
     const intervalId = setInterval(() => {
       fetchData()
@@ -58,28 +52,50 @@ const Forum = () => {
     return () => clearInterval(intervalId)
   }, [])
 
-  // Clear all records
   const clearRecords = () => {
     localStorage.removeItem('forumRecords')
     setRecords([])
   }
 
-  // Update localStorage when records state changes
   useEffect(() => {
     localStorage.setItem('forumRecords', JSON.stringify(records))
   }, [records])
 
   return (
-    <div>
-      <h1>Forum</h1>
-      {/* Display the list of records */}
-      {records.map((record) => (
-        <div key={record.id}>
-          <Link to={`/detail/${record.id}`}>{record.content}</Link>
-        </div>
-      ))}
-      {/* Button to clear all records */}
-      <button onClick={clearRecords}>Clear Records</button>
+    <div style={{ padding: '20px' }}>
+      <h1 style={{ marginBottom: '20px' }}>Forum</h1>
+      <div style={{ marginBottom: '20px' }}>
+        {records.map((record) => (
+          <div key={record.id} style={{ marginBottom: '10px' }}>
+            <Link
+              to={`/record/${record.id}`}
+              style={{
+                marginRight: '10px',
+                textDecoration: 'none',
+                color: 'blue',
+              }}
+              state={{ recor: record }} // Pass the records prop here
+            >
+              {record.content}
+            </Link>
+            <span style={{ fontSize: '12px', color: 'gray' }}>
+              {record.description}
+            </span>
+          </div>
+        ))}
+      </div>
+      <button
+        onClick={clearRecords}
+        style={{
+          padding: '10px 20px',
+          fontSize: '16px',
+          backgroundColor: 'red',
+          color: 'white',
+          border: 'none',
+          cursor: 'pointer',
+        }}>
+        Clear Records
+      </button>
     </div>
   )
 }
