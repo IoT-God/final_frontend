@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import friendImage from '../friend.jpg'
+import serviceImage from '../outservice.jpg'
 
 const Forum = () => {
   const [records, setRecords] = useState(() => {
     const storedRecords = localStorage.getItem('forumRecords')
     return storedRecords ? JSON.parse(storedRecords) : []
   })
-
+  const [connectionError, setConnectionError] = useState(false)
   const fetchData = async () => {
     try {
       const response = await axios.get('http://192.168.10.29:5000/video')
@@ -40,8 +41,10 @@ const Forum = () => {
           },
         ])
       }
+      setConnectionError(false)
     } catch (error) {
       console.error('Error fetching data:', error)
+      setConnectionError(true)
     }
   }
 
@@ -61,7 +64,15 @@ const Forum = () => {
   useEffect(() => {
     localStorage.setItem('forumRecords', JSON.stringify(records))
   }, [records])
-
+  // Render friendImage if there's a connection error
+  if (connectionError) {
+    return (
+      <div style={{ padding: '20px' }}>
+        <img src={serviceImage} alt="out of service" />
+        <p>Unable to connect to the server.</p>
+      </div>
+    )
+  }
   return (
     <div style={{ padding: '20px' }}>
       <h1 style={{ marginBottom: '20px' }}>Forum</h1>
