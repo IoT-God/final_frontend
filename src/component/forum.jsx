@@ -23,7 +23,7 @@ const Forum = () => {
           ...prevRecords,
           {
             id: prevRecords.length + 1,
-            content: 'unknown action detect',
+            content: 'Unknown Action Detected',
             image: base64Image,
             description: 'An unknown people detected',
           },
@@ -35,7 +35,7 @@ const Forum = () => {
           ...prevRecords,
           {
             id: prevRecords.length + 1,
-            content: 'known action detect',
+            content: 'Known Action Detected',
             image: friendImage,
             description: `Your friend ${name} is coming!`,
           },
@@ -73,9 +73,10 @@ const Forum = () => {
       </div>
     )
   }
+
   return (
     <div style={{ padding: '20px' }}>
-      <h1 style={{ marginBottom: '20px' }}>Forum</h1>
+      <h1 style={{ marginBottom: '20px' }}>Security Camera Log</h1>
       <div
         style={{
           marginBottom: '20px',
@@ -83,31 +84,36 @@ const Forum = () => {
           padding: '10px',
           borderRadius: '5px',
         }}>
-        {records.reverse().map((record) => (
-          <div
-            key={record.id}
-            style={{
-              marginBottom: '10px',
-              borderBottom: '1px solid #ccc',
-              paddingBottom: '10px',
-            }}>
-            <Link
-              to={`/record/${record.id}`}
+        {records
+          .sort((a, b) => b.id - a.id)
+          .map((record) => (
+            <div
+              key={record.id}
               style={{
-                marginRight: '10px',
-                textDecoration: 'none',
-                color: 'blue',
-                fontWeight: 'bold',
-              }}
-              state={{ record: record }} // Pass the record prop here
-            >
-              {record.content}
-            </Link>
-            <span style={{ fontSize: '14px', color: 'gray' }}>
-              {record.description}
-            </span>
-          </div>
-        ))}
+                marginBottom: '10px',
+                borderBottom: '1px solid #ccc',
+                paddingBottom: '10px',
+              }}>
+              <Link
+                to={`/record/${record.id}`}
+                style={{
+                  marginRight: '10px',
+                  textDecoration: 'none',
+                  color:
+                    record.content === 'Unknown Action Detected'
+                      ? 'red'
+                      : 'green',
+                  fontWeight: 'bold',
+                }}
+                state={{ record: record }} // Pass the record prop here
+              >
+                {record.content}
+              </Link>
+              <span style={{ fontSize: '14px', color: 'gray' }}>
+                {record.description}
+              </span>
+            </div>
+          ))}
       </div>
       <button
         onClick={clearRecords}
